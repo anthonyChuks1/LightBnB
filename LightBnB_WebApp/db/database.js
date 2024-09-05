@@ -31,7 +31,7 @@ const getUserWithEmail = function (email) {
     )
     .then((result) => {
       if (result.rows.length) {
-        return result.rows;
+        return result.rows[0];
       }
       return null;
     })
@@ -59,13 +59,12 @@ const getUserWithId = function (id) {
     )
     .then((result) => {
       if (result.rows.length) {
-        // console.log(result.rows);
-        return result.rows;
+        return result.rows[0];
       }
       return null;
     })
     .catch((err) => {
-      console.log(err.message);
+      return err.message
     });
 };
 
@@ -86,19 +85,13 @@ const addUser = function (user) {
       [user.name, user.email, user.password]
     )
     .then((result) => {
-      console.log(result.rows);
-      return result.rows;
+      return result.rows[0];
     })
     .catch((err) => {
-      console.log(err.message);
+      
+      return err.message
     });
 };
-// const user = {
-//   name : 'Ben',
-//   email: 'ben@gmail.com',
-//   password: 'password'
-// }
-// addUser(user)
 /// Reservations
 
 /**
@@ -119,11 +112,7 @@ const getAllReservations = function (guest_id, limit = 10) {
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function (options, limit = 10) {
-  // const limitedProperties = {};
-  // for (let i = 1; i <= limit; i++) {
-  //   limitedProperties[i] = properties[i];
-  // }
-  // return Promise.resolve(limitedProperties);
+
   return pool
     .query(
       `
@@ -135,11 +124,10 @@ const getAllProperties = function (options, limit = 10) {
       [limit]
     )
     .then((result) => {
-      //console.log(result.rows);
       return result.rows;
     })
     .catch((err) => {
-      console.log(err.message);
+      return err.message
     });
 };
 
