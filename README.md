@@ -50,6 +50,7 @@ Go to `localhost:3000` in your browser
 ---
 
 <br>
+
 #### PREVIEW
 
 ![Front Page](LBnB_Images/FrontPage.png)
