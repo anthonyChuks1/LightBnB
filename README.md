@@ -24,11 +24,11 @@ The password is `labber`.
 <br>
 Create the database with :
 
-~~~
+```
 \i migrations/01_schema.sql
 \i seeds/01_seeds.sql
 \i seeds/02_seeds.sql;
-~~~
+```
 
 >It may take a while to create the table.
 <br>
@@ -44,6 +44,7 @@ Start the server with `npm run local`.
 <br>
 Go to `localhost:3000` in your browser
 <br>
+
 ---
 
 <br>
