@@ -45,7 +45,7 @@ Start the server with `npm run local`.
 Go to `localhost:3000` in your browser
 ---
 #### PREVIEW
->![Front Page](LBnB_Images/FrontPage.png)
+![Front Page](LBnB_Images/FrontPage.png)
 ![Login Page](LBnB_Images/LoginPage.png)
 ![Realtime Console Log](LBnB_Images/RealtimeConsolelog.png)
 ![Search Page](LBnB_Images/searchPage.png)
