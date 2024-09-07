@@ -146,7 +146,7 @@ const getAllProperties = function(options, limit = 10) {
     queryParams.push(`%${options.city}%`);
     queryString += ` WHERE city LIKE $${queryParams.length} `;
   } else {
-    queryString += ` WHERE city LIKE '%'`;
+    queryString += ` WHERE 1 = 1`;
   }
 
   if (options.owner_id) {
@@ -154,12 +154,12 @@ const getAllProperties = function(options, limit = 10) {
     queryString += ` AND owner_id = $${queryParams.length}`;
   }
   if (options.minimum_price_per_night) {
-    const minPrice = Number(options.minimum_price_per_night);
+    const minPrice = Number(options.minimum_price_per_night) * 100;
     queryParams.push(minPrice);
     queryString += ` AND cost_per_night >= $${queryParams.length}`;
   }
   if (options.maximum_price_per_night) {
-    const maxPrice = Number(options.maximum_price_per_night);
+    const maxPrice = Number(options.maximum_price_per_night) * 100;
     queryParams.push(maxPrice);
     queryString += ` AND cost_per_night <= $${queryParams.length}`;
   }
