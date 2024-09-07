@@ -14,7 +14,7 @@ const pool = new Pool({
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getUserWithEmail = function(email) {
+const getUserWithEmail = function (email) {
   const queryRequest = `
   SELECT  
     id,
@@ -43,7 +43,7 @@ const getUserWithEmail = function(email) {
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getUserWithId = function(id) {
+const getUserWithId = function (id) {
   const queryRequest = `
     SELECT  
     id, name, email, password
@@ -69,7 +69,7 @@ const getUserWithId = function(id) {
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-const addUser = function(user) {
+const addUser = function (user) {
   const queryRequest = `
       INSERT INTO users (name, email, password)
       VALUES ($1, $2, $3)
@@ -91,7 +91,7 @@ const addUser = function(user) {
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function(guest_id, limit = 10) {
+const getAllReservations = function (guest_id, limit = 10) {
   const queryRequest = `
   SELECT
   reservations.id,
@@ -133,7 +133,7 @@ LIMIT
  * @param {*} limit The number of results to return.
  * @return {Promise<[{}]>}  A promise to the properties.
  */
-const getAllProperties = function(options, limit = 10) {
+const getAllProperties = function (options, limit = 10) {
   const queryParams = [];
 
   let queryString = `
@@ -193,11 +193,64 @@ const getAllProperties = function(options, limit = 10) {
  * @param {{}} property An object containing all of the property details.
  * @return {Promise<{}>} A promise to the property.
  */
-const addProperty = function(property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+const addProperty = function (property) {
+  
+  //add the key as the sql table labels
+  let queryString = `
+    INSERT INTO properties (
+      owner_id, title, description, thumbnail_photo_url, cover_photo_url, 
+      cost_per_night, street, city, province, post_code, country, 
+      parking_spaces, number_of_bathrooms, number_of_bedrooms
+    ) VALUES (
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
+    ) RETURNING *;
+  `;
+  
+
+  const propertyValues = {
+    owner_id: property.owner_id || NULL,
+    title: property.title || NULL,
+    description: property.description || '',
+    thumbnail_photo_url: property.thumbnail_photo_url || '',
+    cover_photo_url: property.cover_photo_url || '',
+    cost_per_night: property.cost_per_night || 0,
+    street: property.street || NULL,
+    city: property.city || NULL,
+    province: property.province || NULL,
+    post_code: property.post_code || NULL,
+    country: property.country || NULL,
+    parking_spaces: property.parking_spaces || 0,
+    number_of_bathrooms: property.number_of_bathrooms || 0,
+    number_of_bedrooms: property.number_of_bedrooms || 0,
+  };
+
+  
+  const queryParams = [
+    propertyValues.owner_id,
+    propertyValues.title,
+    propertyValues.description,
+    propertyValues.thumbnail_photo_url,
+    propertyValues.cover_photo_url,
+    propertyValues.cost_per_night*100,
+    propertyValues.street,
+    propertyValues.city,
+    propertyValues.province,
+    propertyValues.post_code,
+    propertyValues.country,
+    propertyValues.parking_spaces,
+    propertyValues.number_of_bathrooms,
+    propertyValues.number_of_bedrooms,
+  ];
+  console.log(queryString, queryParams);
+  return pool
+    .query(queryString, queryParams)
+    .then((result) => {
+      return result.rows[0];
+    })
+    .catch((err) => {
+      console.error('Query error:', err.message);
+      return err.message;
+    });
 };
 
 module.exports = {
@@ -208,3 +261,20 @@ module.exports = {
   getAllProperties,
   addProperty,
 };
+// Property
+// {
+//   owner_id: int,
+//   title: string,
+//   description: string,
+//   thumbnail_photo_url: string,
+//   cover_photo_url: string,
+//   cost_per_night: string,
+//   street: string,
+//   city: string,
+//   province: string,
+//   post_code: string,
+//   country: string,
+//   parking_spaces: int,
+//   number_of_bathrooms: int,
+//   number_of_bedrooms: int
+// }
