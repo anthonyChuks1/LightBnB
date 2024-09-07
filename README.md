@@ -10,7 +10,9 @@ A simple multi-page Airbnb clone that uses a server-side Javascript to display t
 ---
 #### SETUP
 
->Go into the `LightBnB` folder.
+
+
+Go into the `LightBnB` folder.
 <br>
 <br>
 Start PSQL with this command `startpostgres`.
@@ -30,7 +32,7 @@ Create the database with :
 \i seeds/02_seeds.sql;
 ```
 
->It may take a while to create the table.
+It may take a while to create the table.
 <br>
 <br>
 Enter `cd LightBnB_WebApp` in the `/LightBnB` directory. 
